@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id='open'>打开弹框</button>
+  <button id='close'>关闭弹框</button>
+  <div id="father">
+    <a href="#">链接1号</a>
+    <a href="#">链接2号</a>
+    <a href="#">链接3号</a>
+    <a href="#">链接4号</a>
+    <a href="#">链接5号</a>
+    <a href="#">链接6号</a>
+  </div>
+  <img src="" alt="" id="domimage">
+</body>
+<style>
+  #modal {
+    height: 200px;
+    width: 200px;
+    line-height: 200px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid black;
+    text-align: center;
+  }
+</style>
+<script>
+  function fff() {
+    this.jjj = function () {
+      // console.log(1111111)
+    }
+  }
+  function sdf() {
+    this.udfi = function () {
+      // console.log(112312)
+    }
+  }
+  sdf.prototype = new fff();
+  class MobilePhoneFactory {
+    createOS() {
+      throw new Error("抽象方法")
+    }
+    createHardWare() {
+      throw new Error("抽象方法")
+    }
+
+  }
+  class FakeStarFactory extends MobilePhoneFactory {
+    createOS() {
+      console.log("开始创建这个手机的系统")
+      return new AndroidOS();
+    }
+    createHardWare() {
+      console.log("开始创建这个手机的CPU")
+      return new QualcommHardWare()
+    }
+  }
+
+  class OS {
+    controlHardWare() {
+      throw new Error("抽象系统")
+    }
+  }
+
+  class AndroidOS extends OS {
+    controlHardWare() {
+      console.log("使用Android的方法操作硬件")
+    }
+  }
+
+  class AppleOS extends OS {
+    controlHardWare() {
+      console.log("使用苹果的方法操作硬件")
+    }
+  }
+
+  class HardWare {
+    operateByOrder() {
+      throw new Error('抽象产品方法不允许直接调用，你需要将我重写！');
+    }
+  }
+
+  class QualcommHardWare extends HardWare {
+    operateByOrder() {
+      console.log("使用高通的方式运行")
+    }
+  }
+
+  class MiWare extends HardWare {
+    operateByOrder() {
+      console.log("使用小米方式运行")
+    }
+  }
+
+  var myphone = new FakeStarFactory();
+  console.log(new MobilePhoneFactory())
+  var os = myphone.createOS()
+  var hardware = myphone.createHardWare()
+  os.controlHardWare()
+  hardware.operateByOrder();
+
+  // 制造一个手机需要一个系统的类，硬件的类
+
+  //保证一个类仅有一个实例，并提供一个访问他的全局访问点
+  class SingleDog {
+    show() {
+      // console.log("我是一个单例对象")
+    }
+    // static getInstance(){
+    //   if(!SingleDog.instance){
+    //     SingleDog.instance = new SingleDog()
+    //   }
+    //   return SingleDog.instance;
+    // }
+
+  }
+  SingleDog.getInstance = (function () {
+    let instance = null;
+    return function () {
+      if (!instance) {
+        instance = new SingleDog()
+      }
+      return instance
+    }
+  })()
+
+  var s1 = SingleDog.getInstance()
+  var s2 = SingleDog.getInstance()
+  class StroageBase {
+    static getInstance() {
+      if (!StroageBase.instance) {
+        StroageBase.instance = new StroageBase
+      }
+      return StroageBase.instance
+    }
+    getItem(key) {
+      return localStorage.getItem(key)
+    }
+    setItem(key, value) {
+      return localStorage.setItem(key, value)
+    }
+  }
+  var strbase1 = StroageBase.getInstance()
+  var strbase2 = StroageBase.getInstance()
+  function Stroage() { }
+  var stroage = (function () {
+    var instance = null
+    // console.log(instance)
+    return function () {
+      if (!instance) {
+        instance = new Stroage()
+      }
+      return instance
+    }
+  })()
+  Stroage.prototype.getItem = function (key) {
+    return localStorage.getItem(key)
+  }
+  Stroage.prototype.setItem = function (key, value) {
+    return localStorage.setItem(key, value)
+  }
+  var str1 = new stroage()
+  var str2 = new stroage()
+  // console.log(str1, str2)
+
+  var Modal = (function () {
+    var modal = null;
+    return function () {
+      if (!modal) {
+        modal = document.createElement("div")
+        modal.innerHTML = "我是一个全局的model"
+        modal.id = "modal"
+        modal.style.display = "none"
+        document.body.appendChild(modal)
+      }
+      return modal
+    }
+  })()
+  class ModalBase {
+    // static creatModal() {
+    //   if (!this.modal) {
+    //     this.modal = document.createElement("div")
+    //     this.modal.innerHTML = "我是一个全局的model"
+    //     this.modal.id = "modal"
+    //     this.modal.style.display = "none"
+    //     document.body.appendChild(this.modal)
+    //   }
+    //   return this.modal
+    // }
+  }
+  ModalBase.creatModal = (function () {
+    var modal = null
+    return function () {
+      if (!modal) {
+        modal = document.createElement("div")
+        modal.innerHTML = "我是一个全局的model"
+        modal.id = "modal"
+        modal.style.display = "none"
+        document.body.appendChild(modal)
+      }
+      return modal
+    }
+  })()
+
+  document.getElementById("open").addEventListener("click", function () {
+    var modal = ModalBase.creatModal()
+    if (modal) {
+      modal.style.display = "block"
+    }
+  })
+  document.getElementById("close").addEventListener("click", function () {
+    var modal = ModalBase.creatModal()
+    if (modal) {
+      modal.style.display = "none"
+    }
+  })
+
+  function Dog(name, age) {
+    this.name = name
+    this.age = age
+  }
+  Object.prototype.eat = function () {
+    console.log(this)
+  }
+  // Dog.prototype.eat = function () {
+  //   console.log("肉骨头真好吃")
+  // }
+  var dog = new Dog("旺财", 3)
+  var liLei = {
+    name: 'lilei',
+    age: 28,
+    habits: ['coding', 'hiking', 'running']
+  }
+  var liLeiStr = JSON.stringify(liLei)
+  var liLeiCopy = JSON.parse(liLeiStr)
+  liLeiCopy.habits.splice(0, 1)
+  // console.log(liLei,liLeiCopy)
+
+  class _Dog {
+    constructor(name, age) {
+      this.name = name
+      this.age = age
+    }
+    eat() {
+      console.log(this.name, this.age, "真好吃")
+    }
+  }
+  //手写实现new
+  function Otaku(name, age) {
+    this.name = name;
+    this.age = age;
+    // 自身的属性
+    this.habit = 'pk';
+    this.fdfd = "房贷首付"
+    this.fff = {
+      fjsdk: {
+        fjdskl: "fsdlk"
+      }
+    }
+    this.func = function () {
+
+    }
+  }
+  Otaku.prototype.dfas = function () { }
+  var newobj = {}
+  newobj.__proto__ = Otaku.prototype
+  Otaku.call(newobj, "dfasf", 'fdsa')
+  var arr = []
+  function deepClone(obj) {
+    if (typeof obj !== 'object' || obj === null) {
+      return obj
+    }
+    let copy = {}
+    if (obj.constructor === Array) {
+      copy = []
+    }
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        copy[key] = deepClone(obj[key])
+      }
+    }
+    return copy
+    // Object的hasOwnProperty()方法返回一个布尔值，判断对象是否包含特定的自身（非继承）属性。
+  }
+  var _newobj = deepClone(newobj)
+  _newobj.name = "fdsklfjsdlkfjasdlkfjdskl"
+  console.log(_newobj)
+  //手写class单例
+  function iphone() {
+
+  }
+  iphone.prototype.shoujike = function () {
+    throw new Error("我是手机壳的原型")
+  }
+  iphone.prototype.photo = function () {
+    throw new Error("我是手机的照相机")
+  }
+  var iphonese = function () {
+  }
+
+  var move = new iphonese()
+  move.__proto__ = iphone.prototype
+  move.shoujike = function () {
+    console.log("我是iphomese的手机壳")
+  }
+  //装饰器模式
+  var _model = (function () {
+    var modal = null;
+    return function () {
+      if (!modal) {
+        var doc = document.createElement("div")
+        doc.id = "modal"
+        doc.innerHTML = '您还未登录哦~'
+        doc.style.display = "none"
+        document.body.appendChild(doc)
+        modal = doc
+      }
+      return modal;
+    }
+  })()
+  //es5方法
+  // function openModal() {
+  //   var doc = new _model()
+  //   doc.style.display = "block"
+  // }
+  // //按钮文案修改逻辑
+  // function changeButtonText() {
+  //   var btn = document.getElementById("open")
+  //   btn.innerText = "快去登录"
+  // }
+  // //按钮置灰
+  // function disbledButton() {
+  //   var btn = document.getElementById("open")
+  //   btn.setAttribute("disabled", true)
+  // }
+  // //新版逻辑整合
+  // function changeButtonStat() {
+  //   changeButtonText()
+  //   disbledButton()
+  // }
+  // document.getElementById("open").addEventListener("click", function () {
+  //   openModal()
+  //   changeButtonStat()
+  // })
+  //es6方法
+  class OpenButton {
+    onClick() {
+      var modal = new _model()
+      modal.style.display = 'block'
+    }
+  }
+  //定义按钮对应的装饰器
+  class Decorator {
+    constructor(open_button) {
+      this.open_button = open_button
+    }
+    onClick() {
+      this.open_button.onClick()
+      this.changeButtonStatus()
+    }
+    changeButtonStatus() {
+      this.changeButtonText()
+      this.disableButton()
+    }
+    disableButton() {
+      var btn = document.getElementById("open")
+      btn.setAttribute("disabled", true)
+    }
+    changeButtonText() {
+      var btn = document.getElementById("open")
+      btn.innerText = "快去登录"
+    }
+  }
+  var openButton = new OpenButton()
+  var docorator = new Decorator(openButton)
+  document.getElementById("open").addEventListener("click", function () {
+    docorator.onClick()
+  })
+  //装饰器需要安装babel
+  // function classDecorator(target) {
+  //   target.hasDecorator = true
+  //   return target
+  // }
+  // @classDecorator
+
+  // class Button {
+
+  // }
+
+  // // 验证装饰器是否生效
+  // console.log('Button 是否被装饰了：', Button.hasDecorator)
+  //proxy
+  // 规定礼物的数据结构由type和value组成
+  const present = {
+    type: '巧克力',
+    value: 60,
+  }
+
+  // 未知妹子
+  const girl = {
+    // 姓名
+    name: '小美',
+    // 自我介绍
+    aboutMe: '...',
+    // 年龄
+    age: 24,
+    // 职业
+    career: 'teacher',
+    // 假头像
+    fakeAvatar: 'xxxx',
+    // 真实头像
+    avatar: 'xxxx',
+    // 手机号
+    phone: 123456,
+    // 礼物数组
+    presents: [],
+    // 拒收50块以下的礼物
+    bottomValue: 50,
+    // 记录最近一次收到的礼物
+    lastPresent: present,
+  }
+  // 普通私密信息
+  const baseInfo = ['age', 'career']
+  // 最私密信息
+  const privateInfo = ['avatar', 'phone']
+
+  // 用户（同事A）对象实例
+  const user = {
+    isValidated: true,
+    isVIP: false,
+  }
+  //保护代理
+  var JuejinLovers = new Proxy(girl, {
+    get: function (target, property, receiver) {
+      if (baseInfo.indexOf(key) !== -1 && user.isValidated) {
+        console.log("还没有注册")
+        return
+      }
+      if (privateInfo.indexOf(key) !== -1 && user.isVIP) {
+        console.log("只有成为vip才可以")
+        return
+      }
+    },
+    set: function (obj, key, val) {
+      if (key === 'lastPresent') {
+        if (val.value < obj.bottomValue) {
+          console.log("礼物价格太小了")
+          return
+        }
+        obj[lastPresent] = val
+        obj.presents = [...presents, val]
+      }
+    }
+  })
+  //事件代理
+  document.getElementById("father").addEventListener("click", function (e) {
+    var childe = e.target
+    console.log(childe)
+    if (childe.tagName === "A") {
+      e.preventDefault()
+      alert(`我是${e.target.innerText}`)
+    }
+  })
+  //一个img的实例,设置Img的src,利用虚拟代理，实现真实图片的加载
+  class PreLoadImage {
+    constructor(imgNode) {
+      //获取真实的dom节点
+      this.imgNode = imgNode
+    }
+    //操作img的src属性
+    setSrc(imgUrl) {
+      this.imgNode.src = imgUrl
+    }
+  }
+  class ProxyImage {
+    //占位图url地址
+    static LOADING_URL = "http://wisdomsaas-img.oss-cn-beijing.aliyuncs.com/BFAA0FECDD194B7A974C60B7E1B27C18"
+    constructor(targetImage) {
+      //目标image,即preloadImage实例
+      this.targetImage = targetImage
+    }
+    //操作虚拟image，完成加载
+    setSrc(targetImage) {
+      //真实img节点初始化时展示一个占位图
+      this.targetImage.setSrc(ProxyImage.LOADING_URL)
+      //初始化虚拟image
+      var virtualImage = new Image()
+      //设置虚拟image的实例开始加载图片
+      virtualImage.src = targetImage
+      //当目标图片加载完成，将dom上真的img节点的src属性设置为图片的url
+      virtualImage.onload = () => {
+        this.targetImage.setSrc(targetImage)
+      }
+    }
+  }
+  var domimg = new PreLoadImage(document.getElementById("domimage"))
+  var deimg = new ProxyImage(domimg)
+  deimg.setSrc("http://saas2-edu.hseduyun.net/assets/network/images/grkj_dh_icon_xxgl_s.png")
+
+  //数据缓存，缓存代理
+  var addAll = function () {
+    console.log("进行了一个计算")
+    let result = 0;
+    var len = arguments.length;
+    for (var i = 0; i < len; i++) {
+      result += arguments[i]
+    }
+    return result;
+  }
+  var proxyAddAll = (function () {
+    var resultCache = {}
+    return function () {
+      var arg = Array.prototype.join.call(arguments, ",")
+      if (arg in resultCache) {
+        return resultCache[arg]
+      }
+      return resultCache[arg] = addAll(...arguments)
+    }
+  })()
+  // console.log(proxyAddAll(1, 2, 32, 323, 23, 232))
+  // console.log(proxyAddAll(1, 2, 32, 323, 23, 232))
+  //策略模式
+  class CoffeeMaker {
+    constructor() {
+      this.state = 'init';
+    }
+    stateToProcessor = {
+      american: function () {
+        console.log(this)
+        console.log('我只吐黑咖啡');
+      },
+      latte: function () {
+        console.log(`给黑咖啡加点奶`);
+      },
+      vanillaLatte: function () {
+        console.log('黑咖啡加点奶再加香草糖浆');
+      },
+      mocha: function () {
+        console.log('黑咖啡加点奶再加点巧克力');
+      }
+    }
+
+    changeState(state) {
+      this.state = state
+      if (!this.stateToProcessor[state]) {
+        return;
+      }
+      this.stateToProcessor[state]()
+    }
+  }
+  var coffee = new CoffeeMaker()
+  coffee.changeState("american")
+  //状态模式与策略模式区别(状态模式中的行为函数与主体之间存在的关联)
+  class _CoffeeMaker {
+    constructor() {
+      this.state = 'init'
+      // 初始化牛奶的存储量
+      this.leftMilk = '500ml';
+    }
+    stateToProcessor = {
+      that: this,
+      american: function () {
+        console.log('我只吐黑咖啡', this.that.leftMilk);
+      },
+      latte: function () {
+        this.american()
+        console.log(`加点奶`);
+      },
+      vanillaLatte: function () {
+        this.latte()
+        console.log('再加香草糖浆');
+      },
+      mocha: function () {
+        this.latte()
+        console.log('加点巧克力');
+      }
+    }
+    changeState(state) {
+      if (!this.stateToProcessor[state]) {
+        return ""
+      }
+      this.stateToProcessor[state]()
+    }
+  }
+  var _coffee = new _CoffeeMaker()
+  _coffee.changeState("mocha")
+  //发布-订阅
+  class Publisher {
+    constructor() {
+      this.observers = [];
+      console.log("----------------------------------------------------------------------------------------------------------------------------")
+      console.log("%c发布订阅模式创建", 'color:red')
+    }
+    add(observer) {
+      console.log("%c添加订阅者", 'color:red')
+      this.observers.push(observer)
+    }
+    remove(observer) {
+      console.log("%c删除订阅者", 'color:red')
+      this.observers.forEach((item, i) => {
+        if (item === observer) {
+          this.observers.splice(i, 1)
+        }
+      })
+    }
+    notify() {
+      console.log("%c发布通知", 'color:red')
+      this.observers.forEach((observer) => {
+        observer.update(this)
+      })
+    }
+  }
+  //定义订阅者类
+  class Observer {
+    constructor() {
+      console.log("%c创建订阅者", 'color:red')
+    }
+    update() {
+      console.log("%c更新", 'color:red')
+    }
+  }
+  //钉钉拉群、通知需求
+  class wordPublisher extends Publisher {
+    constructor() {
+      super()
+      //初始化需求文档
+      this.prdState = null
+      //还没有拉群
+      this.observers = []
+      console.log("%c初始化需求", 'color:red')
+    }
+    //获取当前需求文档状态
+    getState() {
+      console.log("%c获取当前文档", 'color:red')
+      return this.prdState
+    }
+    setState(state) {
+      console.log("%c需求文档更新", "color:red")
+      this.prdState = state
+      this.notify()
+    }
+  }
+  //开发者
+  class DeveloperObserver extends Observer {
+    constructor() {
+      super()
+      //还没有需求
+      this.prdstate = {}
+    }
+    update(publisher) {
+      console.log("%c客户端接收到需求文档", 'color:red')
+      //钉钉群的需求文档发布
+      this.prdstate = publisher.getState()
+      //开始查看需求文档
+      this.work()
+    }
+    work() {
+      console.log(this.prdstate)
+      console.log("%c查看需求文档、该干活了", "color:red")
+    }
+  }
+  var word = new wordPublisher()
+  word.add(new DeveloperObserver())
+  word.setState({ "需求": "这是一个小需求" })
+  //不会！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！  16章
+  // function observe(target){
+  //   if(target && typeof target === "object"){
+  //     Object.keys(target).forEach((key)=>{
+  //       defineReactive(target,key,target[key])
+  //     })
+  //   }
+  // }
+  // function defineReactive(target,key,val){
+  //   var dep = new Dep()
+  //   //假设当前key还是object，在回调
+  //   observe(val)
+  //   //为当前对象安装监听器
+  //   Object.defineProperty(target,key,{
+  //     //可枚举
+  //     enumerable:true,
+  //     //不可配置
+  //     configurable:false,
+  //     get:function(){
+  //       return val;
+  //     },
+  //     set:function(value){
+  //       console.log(`${target}属性的${key}属性从${val}值变成了${value}`)
+  //       dep.notify()
+  //     }
+  //   })
+  // }
+  // function Dep(){
+  //   this.subs = []
+  //   this.addSub = function(sub){
+  //     this.subs.push(sub)
+  //   }
+  //   this.notify = function(){
+  //     this.subs.forEach((sub)=>{
+  //       sub.update()
+  //     })
+  //   }
+  // }
+  // function EventEmitter(){
+  //   this.handlers ={}//handlers是一个map,用于存储时间与回调之间的对应关系
+  //   //on方法用于安装事件监听器，它接收目标事件名和回调函数作为参数
+  //   this.on = function(eventName,cb){
+  //     //检查目标参数有没有对应监听函数队列
+  //     if(!this.handlers[eventName]){
+  //       //如果没有，那么首先初始化一个监听函数列表
+  //       this.handlers[eventName] = []
+  //     }
+  //   }
+  //   //emit方法用于触发目标事件，接收事件名和监听函数入参作为参数
+  //   this.emit = function(eventName,...args){
+  //     //检查目标时间是否有监听函数队列
+  //     if(this.handlers[eventName]){
+  //       this.handlers[eventName].forEach((callback)=>{
+  //         callback(...args)
+  //       })
+  //     }
+  //   }
+  //   //移除某个时间回调队列里的指定回调函数
+  //   this.off = function(eventName,cb){
+  //     var callbacks = this.handlers[eventName]
+  //     var index = callbacks.indexOf(cb)
+  //     if(index!=-1){
+  //       callbacks.splice(index,1)
+  //     }
+  //   }
+  //   //注册单次监听器
+  //   this.once = function(eventName,cb){
+  //     var wrapper = (...args)=>{
+  //       cb.apply(...args)
+  //       this.off(eventName,wrapper)
+  //     }
+  //     this.on(eventName,wrapper)
+  //   }
+  // }
+  //编写一个迭代器生成函数 function* == 生成器函数（generator）
+  function* iteratorGenerator1() {
+    yield { sdajf: "fdjskljfklsdjfkl" }
+    yield '2号选手'
+    yield '3号选手'
+  }
+  var iterator = iteratorGenerator1()
+
+
+  //手写生成函数{value: {…}, done: false}
+  function iteratorGenerator(list) {
+    // 记录访问索引
+    var idx = 0
+    //记录长度
+    var len = list.length
+    // return {
+    // 自定义next方法
+    iteratorGenerator.next = function () {
+      //如果索引还没有超出集合长度，done为false
+      var done = idx >= len
+      // 如果done是false,则可以继续取值
+      var value = !done ? list[idx++] : undefined
+      return {
+        value: value,
+        done: done
+      }
+    }
+    // }
+  }
+  var iterator = iteratorGenerator(['1号选手', '2号选手', '3号选手']).next()
+  console.log(iterator)
+</script>
+
+</html>
